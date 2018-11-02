@@ -2,28 +2,31 @@ clear; clc; close all;
 
 train_filename = 'data/lymph_train.arff.txt';
 [train_data, metadata] = read_arff_file(train_filename);
-test_filename = 'data/lymph_train.arff.txt';
+test_filename = 'data/lymph_test.arff.txt';
 [test_data, ~] = read_arff_file(test_filename);
 
+pseudocount = 1;
 %%
 labels = train_data(:, end);
 n_training_instances = size(train_data, 1);
 attributes = train_data(:, 2);
 n_attributes = length(metadata.attribute_names) - 1;
 
-count_pos_label = 0;
+count_pos_label = pseudocount;
+count_neg_label = pseudocount;
 for k = 1:n_training_instances
     if(strcmp(labels{k}, metadata.attribute_values{end}{1}))
         count_pos_label = count_pos_label + 1;
+    else
+        count_neg_label = count_neg_label + 1;
     end
 end
-count_neg_label = n_training_instances - count_pos_label;
 
 for i = 1:n_attributes
     n_possible_attribute_values = size(metadata.attribute_values{i}, 2);
     for j = 1:n_possible_attribute_values
-        count_attr_pos_label{i}{j} = 0;
-        count_attr_neg_label{i}{j} = 0;
+        count_attr_pos_label{i}{j} = pseudocount;
+        count_attr_neg_label{i}{j} = pseudocount;
         for k = 1:n_training_instances
             if(strcmp(train_data{k, i}, metadata.attribute_values{i}{j}))
                 if (strcmp(labels{k}, metadata.attribute_values{end}{1}))
@@ -55,11 +58,6 @@ for k = 1:n_test_instances
                     else
                         partial = count_attr_neg_label{i}{j}/count_neg_label;
                     end
-                    % TODO FIX THIS HACK
-                    % NEED TO ADJUST THE PROBABILITIES
-                    if partial == 0
-                        partial = 1;
-                    end
                 end
             end
             probability_product = probability_product * partial;
@@ -72,10 +70,10 @@ for k = 1:n_test_instances
     end
     if probability_product_pos > probability_product_neg
         test_label_pred{k, 1} = metadata.attribute_values{end}{1};
-        probability(k, 1) = probability_product_pos;
+        probability(k, 1) = probability_product_pos/(probability_product_pos + probability_product_neg);
     else
         test_label_pred{k, 1} = metadata.attribute_values{end}{2};
-        probability(k, 1) = probability_product_neg;
+        probability(k, 1) = probability_product_neg/(probability_product_pos + probability_product_neg);
     end
 end
 test_label_actual = test_data(:, end);
