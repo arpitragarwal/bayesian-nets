@@ -39,6 +39,16 @@ for i = 1:n_attributes
     end
 end
 
+adjusted_count_pos_label = zeros(n_attributes, 1);
+adjusted_count_neg_label = zeros(n_attributes, 1);
+for i = 1:n_attributes
+    n_possible_attribute_values = size(metadata.attribute_values{i}, 2);
+    for j = 1:n_possible_attribute_values
+        adjusted_count_pos_label(i) = adjusted_count_pos_label(i) + count_attr_pos_label{i}{j};
+        adjusted_count_neg_label(i) = adjusted_count_neg_label(i) + count_attr_neg_label{i}{j};
+    end
+end
+
 % computation of the conditional probabilities is done
 % training done
 
@@ -54,9 +64,11 @@ for k = 1:n_test_instances
             for j = 1:n_possible_attribute_values
                 if(strcmp(test_data{k, i}, metadata.attribute_values{i}{j}))
                     if l==1
-                        partial = count_attr_pos_label{i}{j}/count_pos_label;
+                        partial = count_attr_pos_label{i}{j}/adjusted_count_pos_label(i);
+                        %partial = count_attr_pos_label{i}{j}/count_pos_label;
                     else
-                        partial = count_attr_neg_label{i}{j}/count_neg_label;
+                        partial = count_attr_neg_label{i}{j}/adjusted_count_neg_label(i);
+                        %partial = count_attr_neg_label{i}{j}/count_neg_label;
                     end
                 end
             end
@@ -77,3 +89,11 @@ for k = 1:n_test_instances
     end
 end
 test_label_actual = test_data(:, end);
+
+%% evaluating accuracy
+n_correctly_classified = 0;
+for i = 1:n_test_instances
+    if(strcmp(test_label_actual{i}, test_label_pred{i}))
+        n_correctly_classified = n_correctly_classified + 1;
+    end
+end
