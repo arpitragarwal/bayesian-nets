@@ -7,6 +7,7 @@ pseudocount = 1;
 p_x1_y   = pseudocount * ones(length(unique_x1), length(unique_y));
 p_x2_y   = pseudocount * ones(length(unique_x2), length(unique_y));
 p_x1x2_y = pseudocount * ones(length(unique_x1), length(unique_x2), length(unique_y));
+p_x1x2y  = pseudocount * ones(length(unique_x1), length(unique_x2), length(unique_y));
 count_y  = zeros(length(unique_y), 1);
 for k = 1:n_instances
     for i = 1:length(unique_x1)
@@ -30,6 +31,7 @@ for k = 1:n_instances
                         && strcmp(x2_vector(k), unique_x2(j)) ...
                         && strcmp( y_vector(k), unique_y (l)))
                     p_x1x2_y(i, j, l) = p_x1x2_y(i, j, l) + 1;
+                    p_x1x2y(i, j, l) = p_x1x2y(i, j, l) + 1;
                 end
             end
         end
@@ -46,6 +48,7 @@ for l = 1:length(unique_y)
     p_x2_y(:, l)      = p_x2_y(:, l)      / (count_y(l) + length(unique_x2) * pseudocount);
     p_x1x2_y(:, :, l) = p_x1x2_y(:, :, l) / (count_y(l) + length(unique_x1) * length(unique_x2) * pseudocount);
 end
+p_x1x2y  = p_x1x2y/(n_instances + length(unique_x1) * length(unique_x2) * length(unique_y) * pseudocount);
 
 mutual_info = 0;
 for i = 1:length(unique_x1)
@@ -54,7 +57,7 @@ for i = 1:length(unique_x1)
             if p_x1x2_y(i, j, l) ~= 0
                 tmp = log(p_x1x2_y(i, j, l)) - (log(p_x1_y(i, l)) + log(p_x2_y(j, l)));
                 tmp = tmp/log(2);
-                mutual_info = mutual_info + (p_x1x2_y(i, j, l) * tmp);
+                mutual_info = mutual_info + (p_x1x2y(i, j, l) * tmp);
             end
         end
     end
