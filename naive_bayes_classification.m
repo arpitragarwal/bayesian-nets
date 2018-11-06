@@ -36,8 +36,7 @@ end
 % computation of the conditional probabilities is done
 % training done
 
-%% debugging related
-
+%%%%%%%%% debugging related
 % sum_counts_pos = zeros(n_attributes, 1);
 % sum_counts_neg = zeros(n_attributes, 1);
 % for i = 1:n_attributes
@@ -50,7 +49,7 @@ end
 %     sum_counts_neg(i) = sum_counts_neg(i) - n_possible_attribute_values;
 % end
 
-%%
+%%%%%%%%
 n_test_instances = size(test_data, 1);
 for k = 1:n_test_instances
     instance = test_data(k, :);
@@ -73,10 +72,12 @@ for k = 1:n_test_instances
             log_prob_sum = log_prob_sum + log(partial);
         end
         if l==1
-            probability_product_pos = probability_product;
+            py_pos = (count_pos_label + pseudocount)/(count_pos_label + count_neg_label + 2*pseudocount);
+            probability_product_pos = probability_product * py_pos;
             log_prob_sum_pos = log_prob_sum;
         else
-            probability_product_neg = probability_product;
+            py_neg = (count_neg_label + pseudocount)/(count_pos_label + count_neg_label + 2*pseudocount);
+            probability_product_neg = probability_product * py_neg;
             log_prob_sum_neg = log_prob_sum;
         end
     end
