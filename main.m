@@ -6,15 +6,8 @@ test_filename = 'data/vote_test.arff.txt';
 [test_data, ~] = read_arff_file(test_filename);
 
 
-[test_label_pred, probability] = naive_bayes_classification(train_data, test_data, meta);
+[predicted_label, probability] = naive_bayes_classification(train_data, test_data, meta);
 
 %% evaluating accuracy
-test_label_actual = test_data(:, end);
-n_test_instances = size(test_data, 1);
-n_correctly_classified = 0;
-for i = 1:n_test_instances
-    if(strcmp(test_label_actual{i}, test_label_pred{i}))
-        n_correctly_classified = n_correctly_classified + 1;
-    end
-end
-n_correctly_classified
+actual_label = test_data(:, end);
+n_correctly_classified = get_num_of_correct_classifications(actual_label, predicted_label);
