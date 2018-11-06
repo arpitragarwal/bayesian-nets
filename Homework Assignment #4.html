@@ -1,0 +1,122 @@
+
+<html class="cs_wisc_edu"><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Homework Assignment #4</title>
+</head>
+
+<body data-gr-c-s-loaded="true"><h2>Homework Assignment #4<br>
+</h2>
+
+<h3>Part 1 takes 50 points, Part 2 takes 25 points, and Part 3 takes 25 points. Part 3 also has 20 points extra credit. </h3>
+
+<h3>Part 1</h3>
+
+For this homework, you are to write a program that implements both <b>naive Bayes</b> and <b>TAN</b> (tree-augmented naive Bayes).
+Specifically, you should assume:
+<ul>
+<li> Your code is intended for binary classification problems.
+</li><li> All of the variables are discrete valued.  Your program should be able to handle an arbitrary number of variables with possibly different numbers of values for each variable.
+</li><li> Laplace estimates (pseudocounts of 1) are used when estimating all probabilities.
+</li></ul>
+
+
+<p>
+
+For the TAN algorithm. Your program should:
+</p><ul>
+<li> Use <a href="http://en.wikipedia.org/wiki/Prim%27s_algorithm">Prim's algorithm</a> to find a maximal spanning tree (but choose <b>maximal</b> weight edges instead of minimal weight ones).  Initialize this process by choosing the first variable in the input file for <em>V<sub>new</sub></em>. If there are ties in selecting <b>maximum</b> weight edges, use the following preference criteria: (1) prefer edges emanating from variables listed earlier in the input file, (2) if there are multiple <b>maximum</b> weight edges emanating from the first such variable, prefer edges going to variables listed earlier in the input file.
+</li><li> To root the maximal weight spanning tree, pick the first variable in the input file as the root.
+</li></ul>
+
+
+<p>
+
+Your program should read files that are in the <a href="http://weka.wikispaces.com/ARFF+%28stable+version%29">ARFF</a> format.  In
+this format, each instance is described on a single line.  The variable
+values are separated by commas, and the last value on each line is the
+class label of the instance.  
+Each ARFF file starts with a header section describing the variables and the class labels.
+Lines starting with '%' are comments.
+See the link above for a brief, but more detailed description of the ARFF format.
+Your program needs to handle only discrete variables, and simple ARFF files (i.e. don't worry about sparse ARFF files and instance weights).
+Example ARFF files are provided below.
+Your program can assume that the class variable is named 'class' and it is the last variable listed in
+the header section.
+
+</p><p>
+
+The program should be called <code>bayes</code> and should accept four
+command-line arguments as follows:<br> <code>bayes
+&lt;train-set-file&gt; &lt;test-set-file&gt; &lt;n|t&gt;</code><br> where the last argument is a single character (either 'n' or 't') that indicates whether to use naive Bayes or TAN.
+</p><p>
+
+If you are using
+a language that is not compiled to machine code (e.g. Java), then you
+should make a small script called <code>bayes</code> that accepts the
+command-line arguments and invokes the appropriate source-code program
+and interpreter, as you did with the previous homeworks.
+
+</p><p> 
+
+Your program should determine the network structure (in the case of TAN)
+and estimate the model parameters using the given training set,
+and then classify the instances in the test set.
+Your program should output the following:
+</p><ul>
+<li>  The structure of the Bayes net by listing one line per variable in which you indicate (i) the name of the variable, (ii) the names of its parents in the Bayes net (for naive Bayes, this will simply be the 'class' variable for each other variable) separated by whitespace.
+</li><li> One line for each instance in the test-set (in the same order as this file)
+indicating (i) 
+the
+predicted class, (ii) the actual class, (iii) and the posterior probability of the predicted class <b>(rounded to 12 digits after the decimal point)</b>.
+</li><li>
+The number of the test-set examples that were correctly classified.
+</li></ul>
+
+
+<p>
+
+You can test the correctness of your code using <a href="lymph/lymph_train.arff">lymph_train.arff</a> and <a href="lymph/lymph_test.arff">lymph_test.arff</a>, as well as <a href="vote/vote_train.arff">vote_train.arff</a> and <a href="vote/vote_test.arff">vote_test.arff</a>.
+<a href="BayesOutputs/">This directory</a> contains the outputs your code should produce for each
+data set.
+
+</p><h3>Part 2</h3>
+
+For this part, use stratified 10-fold cross validation on
+the <a href="chess/chess-KingRookVKingPawn.arff">chess-KingRookVKingPawn.arff</a>
+data set to compare naive Bayes and TAN.  Be sure to use the same
+partitioning of the data set for both algorithms.  Report the accuracy
+the models achieve for each fold and then use a paired <em>t</em>-test
+to determine the statistical significance of the difference in
+accuracy.  Report both the value of the <em>t</em>-statistic and the
+resulting <em>p</em> value.
+
+<p>
+
+You can use a <em>t</em>-test calculator, such as <a href="https://www.graphpad.com/quickcalcs/ttest1.cfm">this one</a> for this exercise.
+
+
+
+</p><p>
+
+
+		<h3>
+			Part 3 - Written Exercises
+		</h3>
+
+This part consists of some written exercises. Download from <a href="written/hw4_written.pdf">here</a>. You can use <a href="written/hw4_written.tex">this latex template</a> to write your solution.
+
+
+
+</p><h3>Submitting Your Work</h3>
+
+You should turn in your work electronically using the Canvas course
+management system.  Turn in all source files and your runnable program
+as well as a file called hw4.pdf that shows your work for Part 2 and 3.  All files should be compressed as one zip file
+named <code>&lt;Wisc username&gt;_hw4.zip</code>.  Upload this zip
+file at the course Canvas site.
+
+
+
+<p>
+</p><p>
+
+</p></body><span class="gr__tooltip"><span class="gr__tooltip-content"></span><i class="gr__tooltip-logo"></i><span class="gr__triangle"></span></span></html>
