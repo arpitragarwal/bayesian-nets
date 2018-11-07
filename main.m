@@ -5,6 +5,7 @@ train_filename = 'data/lymph_train.arff.txt';
 test_filename = 'data/lymph_test.arff.txt';
 [test_data, ~] = read_arff_file(test_filename);
 
+%%
 %[predicted_class, probability] = naive_bayes_classification(train_data, test_data, meta);
 [predicted_class, probability] = TAN_classification(train_data, test_data, meta);
 
