@@ -43,7 +43,8 @@ for i = 1:n_attributes+1
         dataset_name = tmp2{i}{2};
     elseif i > 1
         tmp2{i} = regexp(tmp{i}, "{", 'split');
-        attribute_names{i - 1} = tmp2{i}{2};
+        tmp3{i} = regexp(tmp{i}, " ", 'split');
+        attribute_names{i - 1} = tmp3{i}{2};
         attribute_values{i - 1} = regexp(tmp2{i}{2}, ",", 'split');
         attribute_values{i - 1} = replace(attribute_values{i - 1}, '{', '');
         attribute_values{i - 1} = replace(attribute_values{i - 1}, '}', '');
