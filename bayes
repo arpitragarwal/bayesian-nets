@@ -1,0 +1,5 @@
+#!/bin/bash
+cd src
+nohup matlab -nodisplay -logfile output -r "bayes('../$1', '../$2', '$3'); exit" < /dev/null 
+sed 1,10d output
+cd ../
